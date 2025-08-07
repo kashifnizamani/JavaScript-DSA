@@ -65,8 +65,59 @@ import { node } from "./node.js";
         while(temp.next != null){
             temp = temp.next;
         }
-        return temp;
+        return temp.value;
     }
+
+     atIndex(index){
+        let temp = this._head;
+        let i = 0;
+        while(temp.next != null){
+            if(i === index){
+                return temp.value;
+            }
+            temp = temp.next;
+            i++;
+        }
+        return "index out of bounds"
+     }
+
+     pop(){
+
+        let temp = this._head;
+        while(temp.next.next != null){
+            temp = temp.next;
+        }
+        temp.next = temp.next.next;
+     }
+
+     contains(value){
+        let temp = this._head;
+
+        while(temp != null){
+
+            if(temp.value == value){
+                return true;
+            }
+            temp = temp.next;
+
+        }
+        return false;
+     }
+
+     find(value){
+
+        let temp = this._head;
+        let index = 0;
+        while(temp != null){
+            if(value === temp.value){
+                return index;
+            }
+            temp = temp.next;
+            index++;
+        }
+        return null;
+
+     }
 
 
     toString(){
