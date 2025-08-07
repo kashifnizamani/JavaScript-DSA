@@ -44,6 +44,31 @@ import { node } from "./node.js";
         }
     }
 
+    size(){
+
+        let temp = this._head;
+        let size = 0;
+        while(temp != null){
+            temp = temp.next;
+            size++;
+        }
+        return size;
+
+    }
+
+    head(){
+        return this._head.value;
+    }
+
+    tail(){
+        let temp = this._head;
+        while(temp.next != null){
+            temp = temp.next;
+        }
+        return temp;
+    }
+
+
     toString(){
         let temp = this._head;
         let string = "";

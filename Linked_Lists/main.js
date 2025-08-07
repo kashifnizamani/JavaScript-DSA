@@ -9,3 +9,6 @@ head.append("goodbye")
 head.prepend("hi");
 
 console.log(head.toString());
+console.log(head.size());
+console.log(head.head());
+console.log(head.tail());
