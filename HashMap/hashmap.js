@@ -6,7 +6,7 @@ const Node = (key, value) => {
   };
 };
 
-export const hashmap = (capacity, loadFactor) => {
+export const HashMap = (capacity, loadFactor) => {
   let arr = new Array(capacity);
 
   const hash = (key) => {
@@ -14,14 +14,22 @@ export const hashmap = (capacity, loadFactor) => {
 
     const primeNumber = 31;
     for (let i = 0; i < key.length; i++) {
-      hashCode = primeNumber * hashCode + key.charCodeAt(i);
+      hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % capacity;
     }
 
     return hashCode;
   };
 
   const set = (key, value) => {
-    let index = hash(key) % capacity;
+    let index = hash(key);
+
+    if (index < 0 || index >= arr.length) {
+      throw new Error("Trying to access index out of bounds");
+    }
+
+    if (length() >= capacity * loadFactor) {
+      grow();
+    }
 
     if (!arr[index]) {
       arr[index] = Node(key, value);
@@ -41,7 +49,7 @@ export const hashmap = (capacity, loadFactor) => {
   };
 
   const get = (key) => {
-    let index = hash(key) % capacity;
+    let index = hash(key);
     let current = arr[index];
     while (current) {
       if (current.key === key) {
@@ -53,7 +61,7 @@ export const hashmap = (capacity, loadFactor) => {
   };
 
   const has = (key) => {
-    let index = hash(key) % capacity;
+    let index = hash(key);
 
     let current = arr[index];
     while (current) {
@@ -66,7 +74,7 @@ export const hashmap = (capacity, loadFactor) => {
   };
 
   const remove = (key) => {
-    let index = hash(key) % capacity;
+    let index = hash(key);
 
     let current = arr[index];
 
@@ -94,91 +102,92 @@ export const hashmap = (capacity, loadFactor) => {
     return false;
   };
 
-  const length = () =>{
-     let length = 0;
-    for(let i = 0; i < capacity; i++){
-        if(!arr[i]){
-            continue;
-        }
-        let current = arr[i];
-        while(current){
-            current = current.next;
-            length++;
-        }
+  const length = () => {
+    let length = 0;
+    for (let i = 0; i < capacity; i++) {
+      if (!arr[i]) {
+        continue;
+      }
+      let current = arr[i];
+      while (current) {
+        current = current.next;
+        length++;
+      }
     }
     return length;
-}
+  };
 
-const clear = () =>{
-
-      for(let i = 0; i < capacity; i++){
-        if(!arr[i]){
-            continue;
-        }
-        arr[i] = null;
+  const clear = () => {
+    for (let i = 0; i < capacity; i++) {
+      if (!arr[i]) {
+        continue;
+      }
+      arr[i] = null;
     }
+  };
 
-}
-
-const keys = () =>{
-
+  const keys = () => {
     let keys = [];
-    for(let i = 0; i < capacity; i++){
-        if(!arr[i]){
-            continue;
-        }
-        let current = arr[i];
-        while(current){
-            keys.push(current.key)
-            current = current.next;
-            
-        }
+    for (let i = 0; i < capacity; i++) {
+      if (!arr[i]) {
+        continue;
+      }
+      let current = arr[i];
+      while (current) {
+        keys.push(current.key);
+        current = current.next;
+      }
     }
     return keys;
+  };
 
-}
-
-const values = () =>{
-
+  const values = () => {
     let values = [];
-    for(let i = 0; i < capacity; i++){
-        if(!arr[i]){
-            continue;
-        }
-        let current = arr[i];
-        while(current){
-            values.push(current.value)
-            current = current.next;
-            
-        }
+    for (let i = 0; i < capacity; i++) {
+      if (!arr[i]) {
+        continue;
+      }
+      let current = arr[i];
+      while (current) {
+        values.push(current.value);
+        current = current.next;
+      }
     }
     return values;
+  };
 
-}
-
-const entries = () =>{
-
-     let entries = [];
-    for(let i = 0; i < capacity; i++){
-        if(!arr[i]){
-            continue;
-        }
-        let current = arr[i];
-        while(current){
-            entries.push([current.key, current.value])
-            current = current.next;
-            
-        }
+  const entries = () => {
+    let entries = [];
+    for (let i = 0; i < capacity; i++) {
+      if (!arr[i]) {
+        continue;
+      }
+      let current = arr[i];
+      while (current) {
+        entries.push([current.key, current.value]);
+        current = current.next;
+      }
     }
     return entries;
+  };
 
+  function grow() {
+    // Double capacity
+    capacity *= 2;
+    let oldArr = arr;
+    arr = new Array(capacity);
 
-
-}
-
+    for (let i = 0; i < oldArr.length; i++) {
+      let current = oldArr[i];
+      while (current) {
+        set(current.key, current.value);
+        current = current.next;
+      }
+    }
+  }
 
   return {
-    arr,
+    getArr: () => arr,
     set,
     get,
     has,
