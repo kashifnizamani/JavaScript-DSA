@@ -138,6 +138,45 @@ const keys = () =>{
 
 }
 
+const values = () =>{
+
+    let values = [];
+    for(let i = 0; i < capacity; i++){
+        if(!arr[i]){
+            continue;
+        }
+        let current = arr[i];
+        while(current){
+            values.push(current.value)
+            current = current.next;
+            
+        }
+    }
+    return values;
+
+}
+
+const entries = () =>{
+
+     let entries = [];
+    for(let i = 0; i < capacity; i++){
+        if(!arr[i]){
+            continue;
+        }
+        let current = arr[i];
+        while(current){
+            entries.push([current.key, current.value])
+            current = current.next;
+            
+        }
+    }
+    return entries;
+
+
+
+}
+
+
   return {
     arr,
     set,
@@ -147,5 +186,7 @@ const keys = () =>{
     length,
     clear,
     keys,
+    values,
+    entries,
   };
 };
