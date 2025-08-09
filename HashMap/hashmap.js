@@ -94,11 +94,58 @@ export const hashmap = (capacity, loadFactor) => {
     return false;
   };
 
+  const length = () =>{
+     let length = 0;
+    for(let i = 0; i < capacity; i++){
+        if(!arr[i]){
+            continue;
+        }
+        let current = arr[i];
+        while(current){
+            current = current.next;
+            length++;
+        }
+    }
+    return length;
+}
+
+const clear = () =>{
+
+      for(let i = 0; i < capacity; i++){
+        if(!arr[i]){
+            continue;
+        }
+        arr[i] = null;
+    }
+
+}
+
+const keys = () =>{
+
+    let keys = [];
+    for(let i = 0; i < capacity; i++){
+        if(!arr[i]){
+            continue;
+        }
+        let current = arr[i];
+        while(current){
+            keys.push(current.key)
+            current = current.next;
+            
+        }
+    }
+    return keys;
+
+}
+
   return {
     arr,
     set,
     get,
     has,
     remove,
+    length,
+    clear,
+    keys,
   };
 };
