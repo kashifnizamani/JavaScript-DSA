@@ -35,6 +35,77 @@ export class Tree {
     return this.buildTree(arr, 0, arr.length - 1);
   }
 
+    insert(root, data){
+
+       if (root === null)
+        return new Node(data);
+        
+    // Duplicates not allowed    
+    if (root.data === data)
+        return root;
+      
+      if(data < root.data){
+        root.left = this.insert(root.left, data) 
+      }
+      else if(data > root.data){
+        root.right = this.insert(root.right, data)
+      }
+      return root;
+
+    }
+
+    getSuccessor(curr) {
+    curr = curr.right;
+    while (curr !== null && curr.left !== null) {
+        curr = curr.left;
+    }
+    return curr;
+}
+
+    deleteNode(root, data){
+
+      if(root === null){
+        return root;
+      }
+
+      if(root.data > data){
+        root.left = this.deleteNode(root.left, data);
+      }
+      else if(root.data < data){
+        root.right = this.deleteNode(root.right, data);
+      }
+      else{
+
+                // If root matches with the given key
+
+        // Cases when root has 0 children or 
+        // only right child
+        if (root.left === null) 
+            return root.right;
+
+        // When root has only left child
+        if (root.right === null) 
+            return root.left;
+
+        // When both children are present
+        let succ = this.getSuccessor(root);
+        root.data = succ.data;
+        root.right = this.deleteNode(root.right, succ.data);
+    }
+    return root;
+    }
+
+    find( node = this._root, value) {
+    if (node === null) return null;
+    if (value === node.data) return node;
+
+    if (value < node.data) return this.find(node.left, value);
+    return this.find(node.right, value);
+  }
+
+      
+    
+
 
   prettyPrint(node, prefix = "", isLeft = true) {
     if (node === null) {
