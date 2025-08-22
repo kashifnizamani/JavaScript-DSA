@@ -184,7 +184,13 @@ export class Tree {
     return this.isBalanced(node.left) && this.isBalanced(node.right);
   }
 
+  
 
+rebalance() {
+    let nodes = [];
+    this.inOrderForEach((node) => nodes.push(node.data));
+    this._root = this.callBuildTree(nodes);
+  }
 
       
     
