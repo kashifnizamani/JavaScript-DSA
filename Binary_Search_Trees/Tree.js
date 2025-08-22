@@ -145,6 +145,46 @@ export class Tree {
     callback(node);
   }
 
+    height(value) {
+    let node = this.find(this._root, value);
+    if (!node) return null;
+
+    const calcHeight = (n) => {
+      if (n === null) return -1;
+      return 1 + Math.max(calcHeight(n.left), calcHeight(n.right));
+    };
+
+    return calcHeight(node);
+  }
+
+  depth(value, node = this._root, currentDepth = 0) {
+    if (node === null) return null;
+    if (node.data === value) return currentDepth;
+
+    if (value < node.data) {
+      return this.depth(value, node.left, currentDepth + 1);
+    } else {
+      return this.depth(value, node.right, currentDepth + 1);
+    }
+  }
+
+  isBalanced(node = this._root) {
+    if (node === null) return true;
+
+    const height = (n) => {
+      if (n === null) return -1;
+      return 1 + Math.max(height(n.left), height(n.right));
+    };
+
+    let leftHeight = height(node.left);
+    let rightHeight = height(node.right);
+
+    if (Math.abs(leftHeight - rightHeight) > 1) return false;
+
+    return this.isBalanced(node.left) && this.isBalanced(node.right);
+  }
+
+
 
       
     
